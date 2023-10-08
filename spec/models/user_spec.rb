@@ -21,5 +21,12 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.all_except' do
+    subject { described_class.all_except(user) }
+
+    let!(:user)  { create(:user) }
+    let!(:users) { create_list(:user, 3) }
+
+    it { is_expected.to eq users }
+  end
 end
