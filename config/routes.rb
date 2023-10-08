@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  resources :rooms, only: %i[index]
+  resources :rooms, only: %i[index create]
 end

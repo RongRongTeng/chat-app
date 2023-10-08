@@ -17,4 +17,6 @@ class Room < ApplicationRecord
   has_many :messages, as: :receiveable, dependent: :destroy
 
   validates :name, uniqueness: true, presence: true
+
+  after_create_commit { broadcast_prepend_to 'rooms' }
 end
