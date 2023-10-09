@@ -1,3 +1,11 @@
-<div>
-  <%= room.name %>
-</div>
+<% if @current_room && @current_room.is_a?(Room) && @current_room.id == room.id %>
+  <% is_active = 'active' %>
+<% else %>
+  <% is_active = '' %>
+<% end %>
+
+<%= link_to room, class: "list-group-item list-group-item-action room_list_item #{is_active} border-0" do %>
+  <div class="d-flex align-items-start">
+    <%= room.name %>
+  </div>
+<% end %>
