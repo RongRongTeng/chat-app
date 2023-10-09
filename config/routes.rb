@@ -5,5 +5,11 @@ Rails.application.routes.draw do
 
   root 'pages#home'
 
-  resources :rooms, only: %i[index create]
+  resources :rooms, only: %i[create show] do
+    resources :messages, only: %i[create]
+  end
+
+  resources :users, only: %i[show] do
+    resources :messages, only: %i[create]
+  end
 end

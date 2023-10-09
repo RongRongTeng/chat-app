@@ -1,0 +1,9 @@
+<div class="media message-container-<%= message.user.id %>">
+  <div class="message-box">
+    <div class="bg-light message-content message-content-<%= message.user.id %>" >
+      <div class="font-weight-bold mb-1"><%= message.user.email %></div>
+      <%= message.content %>
+    </div>
+    <p class="small text-muted"><%= message.created_at %></p>
+  </div>
+</div>

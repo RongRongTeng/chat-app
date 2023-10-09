@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 class RoomsController < ApplicationController
-  def index
-    @room = Room.new
-    @rooms = Room.all
-    @users = User.all_except(current_user)
+  include ActsAsReceiveableResources
+
+  before_action :set_receiveable_resources, only: %i[show]
+
+  def show
+    @current_room = Room.find(params[:id])
+
+    @message = Message.new
+    @messages = @current_room.messages.includes(:user, :receiveable).order(created_at: :asc)
+
+    render 'pages/home'
   end
 
   def create

@@ -13,3 +13,59 @@
  *= require_tree .
  *= require_self
  */
+body {
+  overflow: hidden;
+}
+
+.msg-form {
+  width: 100%;
+  height: 56px;
+  padding: 10px;
+}
+
+#messages {
+  height: calc(100vh - 150px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#side_panel {
+  height: calc(100vh - 55px);
+  margin-right: 0px !important;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-bottom: 55px;
+}
+
+.msg-content {
+  width: 80%;
+  margin-right: 5px;
+}
+
+.message-box {
+  word-wrap: break-word;
+  width: fit-content;
+  max-width: 40%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.message-content {
+  padding: 10px;
+}
+
+.user_list_item {
+  height: 50px;
+}
+
+.room_list_item {
+  height: 50px;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  max-height: 800px;
+  overflow-y: scroll
+}

@@ -1,3 +1,58 @@
-<%= link_to "Start Chatting", rooms_path, class:'btn btn-outline-primary' %>
+<div class="row g-0">
+  <div id="side_panel" class="col-12 col-lg-5 col-xl-3">
+    <h4> Hi <%= current_user.email %> </h4>
+    <hr>
+    
+    <strong> Users </strong>
+    <%= turbo_stream_from "users" %>
+    <div id="users">
+      <ul class="list-group">
+        <%= render @users %>
+      </ul>
+    </div>
 
-<%= button_to "Logout", destroy_user_session_path, method: :delete %>
+    <hr>
+
+    <strong> Rooms </strong>
+    <br />
+    <br />
+    <%= render 'rooms/form' %>
+    <br />
+    <%= turbo_stream_from "rooms" %>
+    <div id="rooms">
+      <ul class="list-group">
+        <%= render @rooms %>
+      </ul>
+    </div>
+
+    <hr class="d-block d-lg-none mt-1 mb-0">
+  </div>
+
+  <% if @current_room %>
+    <div class="col-12 col-lg-7 col-xl-9 border-left">
+        <div class="py-2 px-4 border-bottom d-none d-lg-block">
+          <div class="d-flex align-items-center py-1">
+            <div class="flex-grow-1 pl-3">
+              <strong><%= @current_room.name %></strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="position-relative">
+          <div class="chat-messages p-4">
+            <% if @current_room.is_a?(User) %>
+              <%= turbo_stream_from @current_room, current_user %>
+            <% else %>
+              <%= turbo_stream_from @current_room %>
+            <% end %>
+
+            <div id="messages" data-controller="scroll">
+              <%= render @messages %>
+            </div>
+
+            <%= render partial: 'messages/form' %>
+          </div>
+        </div>
+    </div>
+  <% end %>
+</div>

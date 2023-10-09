@@ -26,4 +26,18 @@ class Message < ApplicationRecord
   belongs_to :receiveable, polymorphic: true
 
   validates :content, length: { minimum: 1, maximum: 5000 }
+
+  after_create_commit { broadcast_append_to receiveable if room_message? }
+  after_create_commit { broadcast_append_to user, receiveable if direct_message?  }
+  after_create_commit { broadcast_append_to receiveable, user if direct_message?  }
+
+  private
+
+  def direct_message?
+    receiveable.is_a?(User)
+  end
+
+  def room_message?
+    receiveable.is_a?(Room)
+  end
 end
