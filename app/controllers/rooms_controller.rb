@@ -9,7 +9,9 @@ class RoomsController < ApplicationController
     @current_room = Room.find(params[:id])
 
     @message = Message.new
-    @messages = @current_room.messages.includes(:user, :receiveable).order(created_at: :asc)
+    pagy_messages = @current_room.messages.includes(:user, :receiveable).order(created_at: :desc)
+    @pagy, messages = pagy(pagy_messages, items: 10)
+    @messages = messages.reverse
 
     render 'pages/home'
   end

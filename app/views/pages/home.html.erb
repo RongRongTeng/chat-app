@@ -47,7 +47,11 @@
             <% end %>
 
             <div id="messages" data-controller="scroll">
-              <%= render @messages %>
+              <%= turbo_frame_tag "page_handler" %>
+              <%= render "messages/pager", pagy: @pagy %>
+              <div id="messages-container">
+                <%= render @messages %>
+              </div>
             </div>
 
             <%= render partial: 'messages/form' %>

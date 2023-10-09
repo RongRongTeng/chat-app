@@ -8,11 +8,13 @@ class UsersController < ApplicationController
   def show
     @current_room = User.find(params[:id])
 
-    @message  = Message.new
-    @messages = Message.includes(:user, :receiveable)
-                       .where(users: [current_user, @current_room],
-                              receiveable: [current_user, @current_room])
-                       .order(created_at: :asc)
+    @message = Message.new
+    pagy_messages = Message.includes(:user, :receiveable)
+                           .where(users: [current_user, @current_room],
+                                  receiveable: [current_user, @current_room])
+                           .order(created_at: :desc)
+    @pagy, messages = pagy(pagy_messages, items: 10)
+    @messages = messages.reverse
 
     render 'pages/home'
   end
