@@ -30,6 +30,7 @@ class Message < ApplicationRecord
   after_create_commit { broadcast_append_to receiveable if room_message? }
   after_create_commit { broadcast_append_to user, receiveable if direct_message?  }
   after_create_commit { broadcast_append_to receiveable, user if direct_message?  }
+  after_create_commit :notify_recipients
 
   private
 
@@ -39,5 +40,16 @@ class Message < ApplicationRecord
 
   def room_message?
     receiveable.is_a?(Room)
+  end
+
+  def notify_recipients
+    sender, recipients = if direct_message?
+                           [user, [receiveable]]
+                         elsif room_message?
+                           [receiveable, User.all_except(user)]
+                         end
+
+    notification = MessageNotification.with(message: self, sender:)
+    notification.deliver_later(recipients)
   end
 end

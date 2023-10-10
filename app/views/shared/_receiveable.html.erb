@@ -1,0 +1,12 @@
+<% if @current_room && @current_room == receiveable %>
+  <% is_active = 'active' %>
+<% else %>
+  <% is_active = '' %>
+<% end %>
+
+<%= link_to receiveable, class: "list-group-item list-group-item-action receiveable_list_item #{is_active} border-0", data: { turbo: false } do %>
+  <%= render 'shared/notifications', receiveable: receiveable, current_user: current_user %>
+  <div class="d-flex align-items-start">
+    <%= receiveable.name %>
+  </div>
+<% end %>

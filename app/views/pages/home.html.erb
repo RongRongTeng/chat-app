@@ -2,7 +2,9 @@
   <div id="side_panel" class="col-12 col-lg-5 col-xl-3">
     <h4> Hi <%= current_user.email %> </h4>
     <hr>
-    
+
+    <%= turbo_stream_from "notifications_#{current_user.id}" %>
+
     <strong> Users </strong>
     <%= turbo_stream_from "users" %>
     <div id="users">

@@ -55,11 +55,7 @@ body {
   padding: 10px;
 }
 
-.user_list_item {
-  height: 50px;
-}
-
-.room_list_item {
+.receiveable_list_item {
   height: 50px;
 }
 
@@ -69,3 +65,7 @@ body {
   max-height: 800px;
   overflow-y: scroll
 }
+
+.badge.bg-info {
+   color: white;
+} 

@@ -13,6 +13,8 @@ class RoomsController < ApplicationController
     @pagy, messages = pagy(pagy_messages, items: 10)
     @messages = messages.reverse
 
+    set_notifications_to_read
+
     render 'pages/home'
   end
 
@@ -24,5 +26,12 @@ class RoomsController < ApplicationController
 
   def room_params
     params.fetch(:room, {}).permit(:name)
+  end
+
+  def set_notifications_to_read
+    notifications = @current_room.notifications_as_sender.where(recipient: current_user).unread
+    # rubocop:disable Rails/SkipsModelValidations
+    notifications.update_all(read_at: DateTime.current)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 end

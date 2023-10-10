@@ -21,6 +21,7 @@
 class User < ApplicationRecord
   has_many :sent_messages, class_name: 'Message', dependent: :destroy
   has_many :received_messages, class_name: 'Message', as: :receiveable, dependent: :destroy
+  has_many :notifications, dependent: :destroy, as: :recipient
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -29,7 +30,9 @@ class User < ApplicationRecord
 
   scope :all_except, ->(user) { where.not(id: user.id) }
 
-  after_create_commit { broadcast_append_to 'users' }
+  after_create_commit { broadcast_append_to 'users', locals: { current_user: nil } }
+
+  has_noticed_notifications model_name: 'Notification', param_name: :sender
 
   def name
     email

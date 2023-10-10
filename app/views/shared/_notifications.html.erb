@@ -1,0 +1,6 @@
+<% unread = receiveable.notifications_as_sender.where(type: MessageNotification.name, recipient: current_user).unread %>
+<div id="<%= receiveable.signed_id %>_notifications_count">
+    <% if unread.count > 0 %>
+        <div class="badge badge-pill bg-info float-right"><%= unread.count %></div>
+    <% end %>
+</div>

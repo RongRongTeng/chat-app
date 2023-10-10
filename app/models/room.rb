@@ -18,5 +18,7 @@ class Room < ApplicationRecord
 
   validates :name, uniqueness: true, presence: true
 
-  after_create_commit { broadcast_prepend_to 'rooms' }
+  after_create_commit { broadcast_prepend_to 'rooms', locals: { current_user: nil } }
+
+  has_noticed_notifications model_name: 'Notification', param_name: :sender
 end
