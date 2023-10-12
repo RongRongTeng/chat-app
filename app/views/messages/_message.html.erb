@@ -4,6 +4,6 @@
       <div class="font-weight-bold mb-1"><%= message.user.email %></div>
       <%= message.content %>
     </div>
-    <p class="small text-muted"><%= message.created_at %></p>
+    <p class="small text-muted"><%= local_time(message.created_at) %></p>
   </div>
 </div>

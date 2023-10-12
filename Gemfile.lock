@@ -148,6 +148,7 @@ GEM
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
+    local_time (2.1.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -340,6 +341,7 @@ DEPENDENCIES
   factory_bot_rails
   importmap-rails
   jbuilder
+  local_time
   noticed (~> 1.6)
   pagy (~> 6.1)
   pg (~> 1.1)
