@@ -2,13 +2,16 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   connect() {
-    console.log("connected");
     const messages = document.getElementById("messages");
-    messages.addEventListener("DOMNodeInserted", this.resetScroll);
-    this.resetScroll(messages);
+    this.observer = new MutationObserver(this.resetScroll);
+    this.observer.observe(messages, { childList: true });
+    this.resetScroll();
   }
+
   disconnect() {
-    messages.removeEventListener("DOMNodeInserted", this.resetScroll);
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
   resetScroll() {
     messages.scrollTop = messages.scrollHeight - messages.clientHeight;
