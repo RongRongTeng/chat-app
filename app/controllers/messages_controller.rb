@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class MessagesController < ApplicationController
+  api :POST, '/rooms/:room_id/messages', 'Send message to a specific room'
+  api :POST, '/users/:user_id/messages', 'Send message to a specific user'
+  param :message, Hash, required: true do
+    param :content, String, desc: 'text message content', required: true
+  end
+  returns code: 204
   def create
     receiveable = if (id = params[:room_id])
                     Room.find(id)

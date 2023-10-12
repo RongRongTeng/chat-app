@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Apipie.configure do |config|
-  config.app_name                = 'Inline Chat App'
+  config.app_name                = 'Chat App'
   config.app_info                = ''
   config.api_base_url            = ''
   config.doc_base_url            = '/apipie'

@@ -5,6 +5,8 @@ class UsersController < ApplicationController
 
   before_action :set_receiveable_resources, only: [:show]
 
+  api :GET, '/users/:id', 'Get direct messages with specific user'
+  returns code: 200
   def show
     @current_room = User.find(params[:id])
 
