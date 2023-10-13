@@ -3,69 +3,59 @@ import { useIntersection } from "stimulus-use";
 
 export default class Autoclick extends Controller {
   options = {
-    threshold: 0, // default
+    threshold: 0
   };
+
   static messagesContainer;
   static topMessage;
   static throttling = false;
+  static previousTimestamp = 0;
+
   connect() {
-    console.log("Connected to Autoclick!");
     useIntersection(this, this.options);
   }
 
   appear(entry) {
-    // callback automatically triggered when the element
-    // intersects with the viewport (or root Element specified in the options)
     if (!Autoclick.throttling) {
       Autoclick.throttling = true;
-      Autoclick.messagesContainer =
-        document.getElementById("messages-container");
+
+      Autoclick.messagesContainer = document.getElementById("messages-container");
       Autoclick.topMessage = Autoclick.messagesContainer.children[0];
-      Autoclick.throttle(this.element.click(), 300);
+
+      const click = this.throttle(() => { this.element.click(); }, 300);
+      click()
 
       setTimeout(() => {
         Autoclick.topMessage.scrollIntoView({
           behavior: "auto",
           block: "end",
         });
-        console.log("Scrolling");
         Autoclick.throttling = false;
       }, 250);
     }
   }
 
-  disappear(entry) {
-    // callback automatically triggered when the element
-    // leaves the viewport (or root Element specified in the options)
-  }
-
-  /**
-   * Throttle the click function.
-   * @param {Function} func The function to throttle.
-   * @param {Number} wait The time to wait before executing the function.
-   */
-  static throttle(func, wait) {
-    let timeout = null;
-    let previous = 0;
-
-    let later = function () {
-      previous = Date.now();
-      timeout = null;
+  throttle(func, wait) {
+    let timer = null;
+    let throttlefunc = () => {
       func();
+
+      Autoclick.previousTimestamp = Date.now();
+      timer = null;
     };
 
-    return function () {
-      let now = Date.now();
-      let remaining = wait - (now - previous);
+    const now = Date.now();
+    const remaining = wait - (now - Autoclick.previousTimestamp);
 
+    return function() {
       if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout);
+        if (timer) {
+          clearTimeout(timer);
         }
-        later();
-      } else if (!timeout) {
-        timeout = setTimeout(later, remaining);
+        throttlefunc();
+      } else if (!timer) {
+        timer = setTimeout(throttlefunc, remaining);
       }
-    };
+    }
   }
 }
